@@ -106,7 +106,7 @@ public class ExcelResource {
 	}
 	
 	@GET
-	@Path("/update/{excelFileName}/{col}/{row}/{cellvalue}")
+	@Path("/update/{excelFileName}/{pcol}/{prow}/{cellvalue}")
 	public SheetModel updateExcelFile(@PathParam("excelFileName")  String excelFileName,
 			@PathParam("pcol") int pcol,
 			@PathParam("prow") int prow,
