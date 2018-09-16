@@ -1,5 +1,7 @@
 package com.ositel.ws.excel.demo.resource;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,12 +19,14 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.xmlbeans.impl.common.IOUtil;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -44,8 +48,14 @@ public class ExcelResource {
 			return rm;
 		}
 		String fileName = fileDetail.getFileName();
-		applicationScope.setAttribute(fileName, uploadedInputStream);
-		rm.setMessage("Upload operation done\n back to <a href=\"#\">Home page</a>");
+		byte[] byteBinaryExel = null;
+		try {
+			byteBinaryExel = IOUtils.toByteArray(uploadedInputStream);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		applicationScope.setAttribute(fileName, byteBinaryExel);
+		rm.setMessage("Upload operation done");
 		return rm;
 	}
 	
@@ -58,7 +68,8 @@ public class ExcelResource {
 		boolean firstIter = true;
 		ResourceMessage rm = new ResourceMessage();
 		int lineCount = 1;
-		InputStream binayExcel = (InputStream) applicationScope.getAttribute(excelFileName);
+		byte[] byteBinaryExel = (byte[])applicationScope.getAttribute(excelFileName);
+		InputStream binayExcel = new ByteArrayInputStream(byteBinaryExel);
 
 		if(binayExcel == null) {
 			rm.setMessage("The file specifiyed is not uploded yet");
@@ -106,7 +117,8 @@ public class ExcelResource {
 		boolean firstIter = true;
 		ResourceMessage rm = new ResourceMessage();
 		int lineCount = 1;
-		InputStream binayExcel = (InputStream) applicationScope.getAttribute(excelFileName);
+		byte[] byteBinaryExel = (byte[])applicationScope.getAttribute(excelFileName);
+		InputStream binayExcel = new ByteArrayInputStream(byteBinaryExel);
 
 		if(binayExcel == null) {
 			rm.setMessage("The file specifiyed is not uploded yet");
