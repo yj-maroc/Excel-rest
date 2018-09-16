@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+</head>
+<body>
+<br>
+<fieldset>
+	<legend>Excel upload</legend>
+	<form id="formoid" action="http://localhost:8080/Excel-rest/uploadExcelFile" method="post" enctype="multipart/form-data">
+		<input name="file" id="filename" type="file" /><br><br>
+		<button name="submit" type="submit">Upload</button>
+	</form>
+</fieldset>
+<br/>
+<fieldset>
+	<legend>Excel search file</legend>
+	<form id="formidsearch" action="http://localhost:8080/Excel-rest/uploadExcelFile/search" method="get">
+		<input name="excelFileName" id="excelFileName" type="text" /><br><br>
+		<button name="submit" type="submit">Search</button>
+	</form>
+</fieldset>
+<br/>
+<fieldset>
+	<legend>Excel upadate cell value</legend>
+	<form id="formidupdate" action="http://localhost:8080/Excel-rest/uploadExcelFile/update" method="get">
+		<input name="excelFileNameu" id="excelFileNameu" type="text" placeholder="Excel file name"/><br><br>
+		<input name="prow" id="prow" type="number" placeholder="Row number"/><br><br>
+		<input name="pcol" id="pcol" type="number" placeholder="Colomun number"/><br><br>
+		<input name="cellvalue" id="cellvalue" type="text" placeholder="New cell value"/><br><br>
+		<button name="submit" type="submit">Search</button>
+	</form>
+</fieldset>
+
+<script type='text/javascript'>
+    $("#formidsearch").submit(function(event) {
+      var $form = $( this ), url = $form.attr( 'action' );
+	  $form.attr('action', url+"/"+$('#excelFileName').val());
+    });
+	$("#formidupdate").submit(function(event) {
+      var $form = $( this ), url = $form.attr( 'action' );
+	  $form.attr('action', url+"/"+$('#excelFileNameu').val()+"/"+$('#pcol').val()+"/"+$('#prow').val()+"/"+$('#cellvalue').val());
+    });
+</script>
+
+</body>
+</html>
